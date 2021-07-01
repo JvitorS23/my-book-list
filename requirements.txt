@@ -1,0 +1,7 @@
+Django==3.1.7
+djangorestframework==3.12.4
+psycopg2-binary
+python-dotenv
+django-heroku
+gunicorn
+django-cors-headers
