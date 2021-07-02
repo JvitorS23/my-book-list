@@ -24,10 +24,14 @@ class LoginView(views.APIView):
         login(request, user)
         return response.Response(UserSerializer(user).data)
 
+
 class LogoutView(views.APIView):
+    """Logout APIView"""
     def post(self, request):
+        """Perform user logout"""
         logout(request)
         return response.Response()
+
 
 class ManageUserView(generics.RetrieveUpdateAPIView):
     """Manage the authenticated user"""

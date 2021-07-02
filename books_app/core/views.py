@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def landing(request):
@@ -8,10 +8,8 @@ def landing(request):
 
 def home(request):
     """Render the home page"""
-    if request.user.is_authenticated:
-        print("Logged in")
-    else:
-        print("Not logged in")
+    if not request.user.is_authenticated:
+        return redirect('/login')
 
     return render(request, 'home.html')
 
@@ -19,9 +17,7 @@ def home(request):
 def login(request):
     """Render the login page"""
     if request.user.is_authenticated:
-        print("Logged in")
-    else:
-        print("Not logged in")
+        return redirect('/home')
 
     return render(request, 'login.html')
 
@@ -29,8 +25,6 @@ def login(request):
 def register(request):
     """Render the register page"""
     if request.user.is_authenticated:
-        print("Logged in")
-    else:
-        print("Not logged in")
+        return redirect('/home')
 
     return render(request, 'register.html')

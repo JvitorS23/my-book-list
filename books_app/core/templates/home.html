@@ -11,10 +11,91 @@
 </head>
 <body>
 
-<h1>Home</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark" id="bg-nav" style="background:url(https://i.imgur.com/BSlGxrT.jpg); ">
+        <div class="container">
+            <a style="font-family: 'Suez One', serif;" class="navbar-brand" href="/"><i class="fas book"></i>
+               <i class="fas fa-book-open"></i> MyBookList</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active"
+                               href="/login">Home</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active">
+                                Hello {{user.name}}!
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a href="#" onclick="performLogout()" style="
+                            background-color: rgba(0,0,0,0); border:
+                             none"
+                                    class="nav-link"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a>
+
+
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a style="font-size: large" class="nav-link active"
+                               href="/login"><i
+                                    class="fas fa-sign-in-alt"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="font-size: large" class="nav-link active"
+                               href="/register"> <i
+                                    class="fas fa-user-plus"></i> Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container p-5">
+
+        <h1>Home</h1>
+
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function performLogout(){
+        $.ajax({
+            type: "POST",
+            headers: {
+                'X-CSRFToken': Cookies.get('csrftoken')
+            },
+            url: '/api/user/logout/',
+            success: function(response){
+                window.location.href = "/home";
+            },
+            error:
+                function(response){
+                    if(response.status != 200){
+                        alert('Error during logout!')
+                    }else{
+                        window.location.href = "/";
+                    }
+                },
+            dataType: 'json'
+        });
+    }
+</script>
 
 </body>
 </html>
