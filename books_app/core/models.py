@@ -39,8 +39,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
 
+class BookGender(models.Model):
+    """Book gender model"""
+    name = models.CharField(max_length=30, unique=True)
+
+
 class Book(models.Model):
-    title = models.CharField(max_length=255)
+    """Model for book objects"""
+    title = models.CharField(max_length=255, db_index=True)
     author = models.CharField(max_length=255)
     num_pages = models.IntegerField()
 
@@ -60,7 +66,12 @@ class Book(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_index=True
     )
+
+    gender = models.ForeignKey(BookGender, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('user', 'title'),)
+
+

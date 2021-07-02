@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Book
+from core.models import Book, BookGender
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -10,3 +10,5 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ('id', 'title', 'num_pages', 'status', 'score', 'user')
         read_only_fields = ('id', 'user')
+
+
