@@ -12,7 +12,7 @@ class RegisterUserView(generics.CreateAPIView):
 
 
 class LoginView(views.APIView):
-    """Create a new session for the user"""
+    """Create a new session for an user"""
     authentication_classes = (authentication.SessionAuthentication,)
     serializer_class = LoginSerializer
 

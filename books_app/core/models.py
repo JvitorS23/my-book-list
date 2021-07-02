@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
+from django.utils.translation import gettext_lazy as _
+
+from books_app import settings
 
 
 class UserManager(BaseUserManager):
@@ -34,3 +37,30 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    num_pages = models.IntegerField()
+
+    class BookStatus(models.TextChoices):
+        READING = 'READING', _('Reading')
+        COMPLETED = 'COMPLETED', _('Completed')
+        DROPPED = 'DROPPED', _('Dropped')
+        PLAN_TO_READ = 'PLAN_TO_READ', _('Plan to read')
+
+    status = models.CharField(
+        max_length=15,
+        choices=BookStatus.choices,
+        default=BookStatus.READING,
+    )
+
+    score = models.IntegerField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        unique_together = (('user', 'title'),)
