@@ -5,7 +5,8 @@ from books_api import views
 
 router = DefaultRouter()
 
-router.register('', views.BooksViewset)
+router.register('books', views.BooksViewset)
+router.register('book-gender', views.BookGenderViewSet)
 
 app_name = 'books_api'
 

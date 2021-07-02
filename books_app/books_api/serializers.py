@@ -12,3 +12,10 @@ class BookSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'user')
 
 
+class BookGenderSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(min_length=2)
+
+    class Meta:
+        model = BookGender
+        fields = ('id', 'name')
+        read_only_fields = ('id',)

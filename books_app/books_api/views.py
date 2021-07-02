@@ -3,13 +3,13 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from core.models import Book
+from core.models import Book, BookGender
 from books_api import serializers
-from books_api.permissions import ManageOwnBooks
+from books_api.permissions import ManageOwnBooks, IsSuperUser
 
 
 class BooksViewset(viewsets.ModelViewSet):
-    """Manage recipes in the database"""
+    """Manage books in the database"""
     serializer_class = serializers.BookSerializer
     queryset = Book.objects.all()
     authentication_classes = (SessionAuthentication,)
@@ -34,3 +34,11 @@ class BooksViewset(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
+
+
+class BookGenderViewSet(viewsets.ModelViewSet):
+    """Book gender viewset"""
+    serializer_class = serializers.BookGenderSerializer
+    queryset = BookGender.objects.all()
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated, IsSuperUser)
