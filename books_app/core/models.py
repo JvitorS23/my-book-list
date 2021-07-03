@@ -64,14 +64,15 @@ class Book(models.Model):
         default=BookStatus.READING,
     )
 
-    score = models.IntegerField()
+    score = models.IntegerField(blank=True, null=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         db_index=True
     )
 
-    gender = models.ForeignKey(BookGender, on_delete=models.CASCADE)
+    gender = models.ForeignKey(BookGender, on_delete=models.CASCADE,
+                               blank=True, null=True)
 
     class Meta:
         unique_together = (('user', 'title'),)

@@ -10,7 +10,7 @@ class ManageOwnBooks(permissions.BasePermission):
 
 
 class IsSuperUser(permissions.BasePermission):
-    """Allow only super user to edit book genders"""
+    """Allow only super user to create/edit book genders"""
 
     def has_permission(self, request, view):
         """Allow only super user to edit book genders"""
