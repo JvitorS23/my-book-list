@@ -32,11 +32,11 @@ O docker fará o build de uma imagem personalizada, já instalando as dependênc
 ```bash
  pip install -r requirements.txt
 ```
-Em seguida, é preciso instalar o PostgreSQL, criar uma base de dados para a aplicação e configurar as credenciais do banco como variáveis de ambiente no arquivo .env.
+Em seguida, é preciso [baixar e instalar o PostgreSQL](https://www.postgresql.org/download/), criar uma base de dados para a aplicação e configurar as credenciais do banco como variáveis de ambiente no arquivo .env.
 
 - Rodar migrations e iniciar servidor de desenvolvimento:
 ```bash
- python manage.py migrate &&
+ python manage.py migrate 
  python manage.py runserver 0.0.0.0:8000
 ```
 O servidor de desenvolvimento estará acessível em: [http://localhost:8000](http://localhost:8000).
@@ -58,6 +58,11 @@ Features:
 * Estatísticas de leitura do usuário
 * Usuário pode dar uma nota para os livros que terminou de ler 
 
+## Deploy
+O deploy da aplicação foi feito usando o Heroku. Para tal, o pacote para python django-heroku foi usado, esse pacote facilita o processo de deploy de uma aplicação Django para o heroku, com poucas modificações no código e adição de dois arquivos (Procfile e runtime.txt) o deploy da aplicação pode ser feito.  
+Demo da aplicação rodando no [Heroku](https://www.heroku.com/):
+
+https://django-vehicle-manager.herokuapp.com/
 
 
 
