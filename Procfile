@@ -1,0 +1,1 @@
+web: cd books_app && gunicorn books_app.wsgi --log-file -

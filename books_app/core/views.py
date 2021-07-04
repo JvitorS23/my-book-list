@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
-from django.db.models import Count, Sum, Avg
-from core.models import Book, BookGender
 from books.serializers import BookSerializer, BookGenderSerializer
+from core.models import Book, BookGender
+from django.db.models import Count, Sum, Avg
+from django.shortcuts import render, redirect
 
 
 def landing(request):
@@ -17,14 +17,14 @@ def home(request):
     books = Book.objects.all().filter(
         user=request.user)
 
-    status_count_queryset = books.values('status').annotate(total=Count(
-        'status'))
     status_count = {
         'COMPLETED': 0,
         'READING': 0,
         'PLAN_TO_READ': 0,
         'DROPPED': 0
     }
+    status_count_queryset = books.values('status').annotate(total=Count(
+        'status'))
     for item in status_count_queryset:
         status_count[item['status']] = item['total']
 
@@ -38,7 +38,6 @@ def home(request):
         mean_score = "{:.1f}".format(mean_score)
 
     serialized_books = BookSerializer(books, many=True).data
-
     for book in serialized_books:
         book['status'] = book['status'].capitalize().replace('_', ' ')
         if book['score'] == None:
