@@ -9,9 +9,8 @@ schema_view = get_schema_view(
    openapi.Info(
       title="MyBookList API",
       default_version='v1',
-      description="An API for manage books and reading",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@mybooklist.com"),
+      description="An API for manage personal books and reading",
+      contact=openapi.Contact(email="jvss23031999@gmail.com"),
       license=openapi.License(name="MIT License"),
    ),
    public=True,
