@@ -14,6 +14,11 @@ from pathlib import Path
 import os
 import dotenv
 
+import django_heroku
+
+# CORS CONFIG
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,15 +50,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
     'django_extensions',
     'rest_framework',
-    'rest_framework.authtoken',
+    'corsheaders',
     'core',
     'user',
     'books'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -149,3 +156,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

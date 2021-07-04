@@ -1,7 +1,6 @@
-from rest_framework import views, generics, response, permissions, authentication
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.settings import api_settings
 from django.contrib.auth import login, logout
+from rest_framework import views, generics, response, permissions, \
+    authentication
 
 from .serializers import UserSerializer, LoginSerializer
 
@@ -27,6 +26,7 @@ class LoginView(views.APIView):
 
 class LogoutView(views.APIView):
     """Logout APIView"""
+
     def post(self, request):
         """Perform user logout"""
         logout(request)
