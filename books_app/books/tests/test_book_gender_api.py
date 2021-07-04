@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+
 BOOKGENDER_URL = reverse('books:book-gender-list')
 
 
@@ -31,7 +32,7 @@ class PublicBookGenderApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
-class PrivateBookGenderNormalUserApiTests(TestCase):
+class PrivateBookGenderApiTests(TestCase):
     """Test the books gender API (private) features for the normal user"""
 
     def setUp(self):
@@ -40,22 +41,28 @@ class PrivateBookGenderNormalUserApiTests(TestCase):
             'test@email.com',
             'test_password'
         )
+
+        self.user2 = get_user_model().objects.create_user(
+            'test2@email.com',
+            'test_password'
+        )
+
         self.client.force_authenticate(self.user)
 
-    def test_retrieve_book_genders(self):
+    def test_retrieve_owned_book_genders(self):
         """Test retrieving a list of book genders"""
-        create_book_gender(name='Action')
-        create_book_gender(name='Drama')
+        create_book_gender(name='Action', user=self.user)
+        create_book_gender(name='Drama', user=self.user2)
 
         res = self.client.get(BOOKGENDER_URL)
-        book_genders = BookGender.objects.all()
+        book_genders = BookGender.objects.all().filter(user=self.user)
         serializer = BookGenderSerializer(book_genders, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_retrieve_book_gender_detail(self):
         """Test retrieving a specific book gender"""
-        book_gender = create_book_gender(name='Action')
+        book_gender = create_book_gender(name='Action', user=self.user)
 
         url = detail_url(book_gender.id)
 
@@ -65,40 +72,14 @@ class PrivateBookGenderNormalUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_normal_user_cannot_create_book_gender(self):
-        """Test that a normal user can't create a book gender """
-        payload = {
-            'name': 'Drama'
-        }
-
-        res = self.client.post(BOOKGENDER_URL, payload)
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_normal_user_cannot_edit_book_gender(self):
-        """Test that a normal user can't edit a book gender """
-        book_gender = create_book_gender(name='Action')
-
+    def test_retrieve_other_user_book_gender_detail_fails(self):
+        """Test retrieving other user book gender fails"""
+        book_gender = create_book_gender(name='Fantasy', user=self.user2)
         url = detail_url(book_gender.id)
-        payload = {
-            'name': 'Drama'
-        }
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
-        res = self.client.put(url, payload)
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-
-class PrivateBookGenderSuperUserApiTests(TestCase):
-    """Test the books gender API (private) features for the normal user"""
-
-    def setUp(self):
-        self.client = APIClient()
-        self.user = get_user_model().objects.create_superuser(
-            'test@email.com',
-            'test_password'
-        )
-        self.client.force_authenticate(self.user)
-
-    def test_super_user_can_create_book_gender(self):
+    def test_create_book_gender(self):
         """Test that a super user can create a book gender """
         payload = {
             'name': 'Drama'
@@ -107,9 +88,9 @@ class PrivateBookGenderSuperUserApiTests(TestCase):
         res = self.client.post(BOOKGENDER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-    def test_super_user_can_edit_book_gender(self):
-        """Test that a super user can edit a book gender """
-        book_gender = create_book_gender(name='Action')
+    def test_edit_book_gender(self):
+        """Test that a user can edit a book gender """
+        book_gender = create_book_gender(name='Action', user=self.user)
 
         url = detail_url(book_gender.id)
         payload = {
@@ -119,3 +100,15 @@ class PrivateBookGenderSuperUserApiTests(TestCase):
         res = self.client.put(url, payload)
         self.assertEqual(res.data['name'], payload['name'])
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_user_cannot_edit_other_users_book_genders(self):
+        """Test that a user cannot edit other user book genders """
+        book_gender = create_book_gender(name='Action', user=self.user2)
+
+        url = detail_url(book_gender.id)
+        payload = {
+            'name': 'Drama'
+        }
+
+        res = self.client.put(url, payload)
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

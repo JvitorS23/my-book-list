@@ -1,5 +1,5 @@
 from books import serializers
-from books.permissions import ManageOwnBooks, IsSuperUser
+from books.permissions import ManageOwnObjects
 from core.models import Book, BookGender
 from rest_framework import viewsets, status
 from rest_framework.authentication import SessionAuthentication
@@ -12,7 +12,7 @@ class BooksViewset(viewsets.ModelViewSet):
     serializer_class = serializers.BookSerializer
     queryset = Book.objects.all()
     authentication_classes = (SessionAuthentication,)
-    permission_classes = (IsAuthenticated, ManageOwnBooks)
+    permission_classes = (IsAuthenticated, ManageOwnObjects)
 
     def get_queryset(self):
         """Retrieve the books for the authenticated user"""
@@ -54,4 +54,12 @@ class BookGenderViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BookGenderSerializer
     queryset = BookGender.objects.all()
     authentication_classes = (SessionAuthentication,)
-    permission_classes = (IsAuthenticated, IsSuperUser)
+    permission_classes = (IsAuthenticated, ManageOwnObjects)
+
+    def get_queryset(self):
+        """Retrieve the book genders for the authenticated user only"""
+        return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Create a new book gender object"""
+        serializer.save(user=self.request.user)

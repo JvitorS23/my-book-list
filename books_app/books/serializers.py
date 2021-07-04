@@ -26,5 +26,5 @@ class BookGenderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookGender
-        fields = ('id', 'name')
-        read_only_fields = ('id',)
+        fields = ('id', 'name', 'user')
+        read_only_fields = ('id', 'user')

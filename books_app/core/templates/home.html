@@ -128,17 +128,21 @@
                        class="btn btn-md btn-info"><i
                   class="fas fa-plus-circle"></i> Add book</button>
 
-               {% if request.user.is_superuser %}
                <hr>
                <strong>
-                  <h4 class="mt-2"><strong>Admin Panel</strong></h4>
+                  <h4 class="mt-2"><strong>Book Gender</strong></h4>
                </strong>
                <hr>
-               <button
+               <button type="button" data-toggle="modal"
+                       data-target="#book_gender_modal"
                        style="width: 100%" class="btn btn-md btn-dark"><i
                   class="fas fa-plus-circle"></i> Add book
                gender</button>
-               {% endif %}
+
+               <button type="button" data-toggle="modal"
+                       data-target="#book_gender_modal_edit"
+                       style="width: 100%" class="btn btn-md btn-dark mt-2"><i class="fas fa-pencil-alt"></i> Edit book
+               gender</button>
             </div>
             <div class="col-md-9">
                <strong>
@@ -158,9 +162,11 @@
                   <select class="filter_gender"
                      name="filter_gender">
                      <option></option>
+                     <option value="ALL">All</option>
                      {% for gender in book_genders %}
-                     <option value="gender.id">gender.name</option>
+                     <option value="{{gender.id}}">{{gender.name}}</option>
                      {% endfor %}
+
                   </select>
                </div>
                <div class="table-wrapper-scroll-y my-custom-scrollbar mt-2">
@@ -177,8 +183,11 @@
                            </th>
                            <th style="position: sticky; top: 0;
                            background-color: rgba(230, 230, 230, 0.99)"
-                               scope="col">#
-                               Pages</th>
+                               scope="col">Gender
+                           </th>
+                           <th style="position: sticky; top: 0;
+                           background-color: rgba(230, 230, 230, 0.99)"
+                               scope="col">Pages</th>
                            <th style="position: sticky; top: 0;
                            background-color: rgba(230, 230, 230, 0.99)"
                                scope="col">Status
@@ -202,6 +211,7 @@
                         <tr>
                            <td>{{book.title}}</td>
                            <td>{{book.author}}</td>
+                           <td>{{book.gender_name}}</td>
                            <td>{{book.num_pages}}</td>
                            <td>{{book.status}}</td>
                            <td>{{book.score}}</td>
@@ -302,7 +312,7 @@
                                      name="book_gender">
                                      <option></option>
                                     {% for gender in book_genders %}
-                                    <option value="gender.id">gender.name</option>
+                                    <option value="{{gender.id}}">{{gender.name}}</option>
                                     {% endfor %}
                                   </select>
                               </div>
@@ -363,6 +373,104 @@
           </div>
         </div>
 
+         <!-- Modal -->
+         <div class="modal fade" id="book_gender_modal" tabindex="-1"
+              aria-labelledby="book_gender_modal" aria-hidden="true">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="book_gender_modal_title">Add
+                    book gender</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div class="modal-body">
+                  <form id="form-modal-book-gender">
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender_name"
+                                     class="form-label">Name
+                              </label>
+                              <input required type="text"
+                                     class="form-control" id="book_gender_name"
+                                 name="book_gender_name"
+                                 aria-describedby="emailHelp">
+                           </div>
+                        </div>
+                     </div>
+                     <button style="float: right" id="modal-add-gender-btn"
+                           type="submit"
+                           class="btn btn-primary">Add
+                     </button>
+                  </form>
+               </div>
+             </div>
+           </div>
+         </div>
+
+      <!-- Modal -->
+         <div class="modal fade" id="book_gender_modal_edit" tabindex="-1"
+              aria-labelledby="book_gender_modal_edit" aria-hidden="true">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="book_gender_modal_edit_title">Edit
+                    book gender</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div class="modal-body">
+                  <form id="form-modal-book-gender-edit">
+                     <div class="row">
+
+                         <div class="col">
+                              <div class="mb-3">
+                                 <label for="book_gender_edit_select"
+                                        class="form-label">Book Gender
+                                 </label>
+                                  <select required id="book_gender_edit_select"
+                                     name="book_gender">
+                                     <option></option>
+                                    {% for gender in book_genders %}
+                                    <option value="{{gender.id}}">{{gender.name}}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                           </div>
+
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender_new_name"
+                                     class="form-label">New Name
+                              </label>
+                              <input required type="text"
+                                     class="form-control"
+                                     id="book_gender_new_name"
+                                 name="book_gender_name"
+                                 aria-describedby="book_gender_new_name">
+                           </div>
+                        </div>
+                     </div>
+                     <button style="float: right" id="modal-edit-gender-btn"
+                           type="submit"
+                           class="btn btn-primary">Edit
+                     </button>
+
+
+                  </form>
+                    <button onclick="deleteGender()" disabled style="float:
+                    right"
+                               id="modal-delete-gender-btn"
+                           class="btn btn-danger mr-2">Delete
+                     </button>
+               </div>
+             </div>
+           </div>
+         </div>
+
       <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -372,7 +480,6 @@
          var update_id_book = '';
          $(document).ready(function() {
             $('#form-modal').on('submit', function(e){
-
               e.preventDefault();
               data = {
                   title: document.getElementById('book_title').value,
@@ -419,7 +526,32 @@
               }
             });
 
+            $('#form-modal-book-gender-edit').on('submit', function(e) {
+                e.preventDefault();
+                book_gender_id = document.getElementById('book_gender_edit_select').value
 
+                data = {
+                    id: book_gender_id,
+                    name: document.getElementById('book_gender_new_name').value
+                }
+
+                $.ajax({
+                      type: "PUT",
+                      headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                      },
+                      url: '/api/book-gender/'+book_gender_id+'/',
+                      data: data,
+                      success: function (response) {
+                          document.location.reload(true);
+                      },
+                      error: function (response) {
+                          alert('Error editing book gender!')
+                      },
+                      dataType: 'json'
+                  });
+
+            })
 
          });
 
@@ -500,6 +632,26 @@
             });
          }
 
+         function deleteGender(){
+             var book_gender_id = ''
+             book_gender_id =
+                 document.getElementById('book_gender_edit_select').value
+             $.ajax({
+                type: "DELETE",
+                headers: {
+                  'X-CSRFToken': Cookies.get('csrftoken')
+                },
+                url: '/api/book-gender/'+book_gender_id+'/',
+                success: function (response) {
+                  alert('Book gender deleted!')
+                  document.location.reload(true);
+                },
+                error: function (response) {
+                    alert('Error deleting book gender!')
+                },
+                dataType: 'json'
+            });
+         }
 
          function performLogout(){
              $.ajax({
@@ -527,14 +679,15 @@
              $('.filter_status').select2({
                  width: '200px',
                  placeholder: "Filter by status",
-                 minimumResultsForSearch: -1
+                 minimumResultsForSearch: -1,
+                 initSelection: function(element, callback) {}
              });
 
               $('#book_gender').select2({
                  width: '200px',
                  placeholder: "Select a gender",
-                 initSelection: function(element, callback) {
-                  }
+                 minimumResultsForSearch: -1,
+                 initSelection: function(element, callback) {}
              });
 
 
@@ -554,9 +707,23 @@
                }
              });
 
+            $('#book_gender_edit_select').select2({
+                 width: '200px',
+                 placeholder: "Select a gender",
+                 minimumResultsForSearch: -1,
+                 initSelection: function(element, callback) {}
+
+             });
+
+            $('#book_gender_edit_select').on('change', () => {
+               document.getElementById('modal-delete-gender-btn').disabled  = false
+            })
+
              $('.filter_gender').select2({
                  width: '200px',
                  placeholder: "Filter by book gender",
+                 minimumResultsForSearch: -1,
+                 initSelection: function(element, callback) {}
              });
          });
 
@@ -569,6 +736,32 @@
                $("#book_score_select").val('').trigger('change')
             }
          }
+
+         $(document).ready(function() {
+            $('#form-modal-book-gender').on('submit', function(e){
+
+              e.preventDefault();
+              data = {
+                  name: document.getElementById('book_gender_name').value,
+              }
+                  $.ajax({
+                      type: "POST",
+                      headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                      },
+                      url: '/api/book-gender/',
+                      data: data,
+                      success: function (response) {
+                          document.location.reload(true);
+                      },
+                      error: function (response) {
+
+                          alert('Error adding book gender!')
+                      },
+                      dataType: 'json'
+                  });
+            });
+         });
       </script>
    </body>
 </html>

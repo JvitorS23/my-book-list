@@ -43,7 +43,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class BookGender(models.Model):
     """Book gender model"""
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_index=True
+    )
+    class Meta:
+        unique_together = (('user', 'name'),)
 
 
 class Book(models.Model):
@@ -71,7 +78,7 @@ class Book(models.Model):
         db_index=True
     )
 
-    gender = models.ForeignKey(BookGender, on_delete=models.CASCADE,
+    gender = models.ForeignKey(BookGender, on_delete=models.SET_NULL,
                                blank=True, null=True)
 
     class Meta:

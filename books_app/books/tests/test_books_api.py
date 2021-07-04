@@ -151,7 +151,7 @@ class PrivateBooksApiTests(TestCase):
 
     def test_create_book_with_gender(self):
         """Test creating a book with a gender"""
-        sample_gender = create_book_gender(name='Drama')
+        sample_gender = create_book_gender(name='Drama', user=self.user)
         payload = {
             'title': 'Harry Potter',
             'author': 'jv',
@@ -168,12 +168,12 @@ class PrivateBooksApiTests(TestCase):
 
     def test_full_update_book(self):
         """Test if update endpoint works"""
-        gender = create_book_gender(name='Drama')
+        gender = create_book_gender(name='Drama', user=self.user)
         book = create_book(user=self.user, author='jose', title='B',
                            num_pages=123, status='COMPLETED', score=7,
                            gender=gender)
 
-        new_gender = create_book_gender(name='Ação')
+        new_gender = create_book_gender(name='Ação', user=self.user)
         payload = {
             'title': 'Update title',
             'author': 'jv',
@@ -196,7 +196,7 @@ class PrivateBooksApiTests(TestCase):
 
     def test_partial_update_book(self):
         """Test if update endpoint works"""
-        gender = create_book_gender(name='Drama')
+        gender = create_book_gender(name='Drama', user=self.user)
         book = create_book(user=self.user, author='jose', title='B',
                            num_pages=123, status='READING', score=7,
                            gender=gender)
@@ -249,12 +249,12 @@ class PrivateBooksApiTests(TestCase):
 
     def test_filter_books_by_gender(self):
         """Test filtering books by gender"""
-        gender1 = create_book_gender(name='Drama')
+        gender1 = create_book_gender(name='Drama', user=self.user)
         book1 = create_book(user=self.user, author='jose', title='A',
                             num_pages=123, status='READING', score=7,
                             gender=gender1)
 
-        gender2 = create_book_gender(name='Fantasia')
+        gender2 = create_book_gender(name='Fantasia', user=self.user)
         book2 = create_book(user=self.user, author='jose', title='B',
                             num_pages=123, status='COMPLETED', score=7,
                             gender=gender2)
