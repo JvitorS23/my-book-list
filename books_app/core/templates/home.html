@@ -1,101 +1,830 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>MyBookList | Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark" id="bg-nav" style="background:url(https://i.imgur.com/BSlGxrT.jpg); ">
-        <div class="container">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <title>MyBookList | Login</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+      <style>
+         html, body {margin:0;padding:0;height:100%;}
+         .my-custom-scrollbar {
+         position: relative;
+         height: 400px;
+         overflow: auto;
+         }
+         .table-wrapper-scroll-y {
+         display: block;
+         }
+      </style>
+   </head>
+   <body background="https://i.imgur.com/InQl7xB.jpg">
+      <nav class="navbar navbar-expand-lg navbar-dark" id="bg-nav" style="background:url(https://i.imgur.com/BSlGxrT.jpg); ">
+         <div class="container">
             <a style="font-family: 'Suez One', serif;" class="navbar-brand" href="/"><i class="fas book"></i>
-               <i class="fas fa-book-open"></i> MyBookList</a>
+            <i class="fas fa-book-open"></i> MyBookList</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link active"
-                               href="/login">Home</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link active">
-                                Hello {{user.name}}!
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-
-                            <a href="#" onclick="performLogout()" style="
-                            background-color: rgba(0,0,0,0); border:
-                             none"
-                                    class="nav-link"><i
-                                class="fas fa-sign-out-alt"></i> Logout</a>
-
-
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a style="font-size: large" class="nav-link active"
-                               href="/login"><i
-                                    class="fas fa-sign-in-alt"></i> Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a style="font-size: large" class="nav-link active"
-                               href="/register"> <i
-                                    class="fas fa-user-plus"></i> Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
+               <ul class="navbar-nav mr-auto">
+                  {% if user.is_authenticated %}
+                  <li class="nav-item">
+                     <a class="nav-link active"
+                        href="/login">Home</a>
+                  </li>
+                  {% endif %}
+               </ul>
+               <ul class="navbar-nav">
+                  {% if user.is_authenticated %}
+                  <li class="nav-item">
+                     <a class="nav-link active">
+                     Hello {{user.name}}!
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="#" onclick="performLogout()" style="
+                        background-color: rgba(0,0,0,0); border:
+                        none"
+                        class="nav-link"><i
+                        class="fas fa-sign-out-alt"></i> Logout</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                     <a style="font-size: large" class="nav-link active"
+                        href="/login"><i
+                        class="fas fa-sign-in-alt"></i> Login</a>
+                  </li>
+                  <li class="nav-item">
+                     <a style="font-size: large" class="nav-link active"
+                        href="/register"> <i
+                        class="fas fa-user-plus"></i> Register</a>
+                  </li>
+                  {% endif %}
+               </ul>
             </div>
-        </div>
-    </nav>
-
-    <div class="container p-5">
-
-        <h1>Home</h1>
-
-    </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-    function performLogout(){
-        $.ajax({
-            type: "POST",
-            headers: {
-                'X-CSRFToken': Cookies.get('csrftoken')
-            },
-            url: '/api/user/logout/',
-            success: function(response){
-                window.location.href = "/home";
-            },
-            error:
-                function(response){
-                    if(response.status != 200){
-                        alert('Error during logout!')
-                    }else{
-                        window.location.href = "/";
+         </div>
+      </nav>
+      <div class="container ">
+         <div class="row mt-4" style="height: 100%; background-color: white;
+            padding: 26px 20px; border-radius: 4px" >
+            <div class="col-md-3 " style="border-right: 1px rgba(0,0,0,0.2) solid">
+               <strong>
+                  <h4 class="mt-2"><strong>Statistics</strong></h4>
+               </strong>
+               <hr>
+               <div>
+                  <i class="fas fa-check-circle text-success"></i>
+                  Completed
+                  <span id="num_completed"
+                     style="float: right">{{status_count.COMPLETED}}</span>
+               </div>
+               <div>
+                  <i class="fas fa-spinner text-info"></i>
+                  Reading
+                  <span id="num_reading" style="float: right">{{status_count.READING}}</span>
+               </div>
+               <div>
+                  <i class="fas fa-times-circle text-danger"></i>
+                  Dropped
+                  <span id="num_dropped" style="float: right">{{status_count.DROPPED}}</span>
+               </div>
+               <div>
+                  <i class="fas fa-list-alt text-info"></i>
+                  Plan to read
+                  <span id="num_planned" style="float: right">{{status_count.PLAN_TO_READ}}</span>
+               </div>
+               <hr>
+               <div>
+                  <i class="fas fa-file-alt"></i>
+                  Pages read #
+                  <span id="total_pages_read"
+                     style="float: right">{{total_read_pages}}</span>
+               </div>
+               <div>
+                  <i class="far fa-bookmark"></i>
+                  Favorite gender
+                  <span id="fav_gender" style="float: right">XX</span>
+               </div>
+               <div>
+                  <i class="fas fa-star-half-alt"></i>
+                  Mean score
+                  <span id="mean_score" style="float: right">
+                  {{mean_score}}</span>
+               </div>
+               <hr>
+               <button onclick="resetModal()" type="button" data-toggle="modal"
+                  data-target="#book-modal" style="width: 100%"
+                  class="btn btn-md btn-info"><i
+                  class="fas fa-plus-circle"></i> Add book</button>
+               <hr>
+               <strong>
+                  <h4 class="mt-2"><strong>Book Gender</strong></h4>
+               </strong>
+               <hr>
+               <button type="button" data-toggle="modal"
+                  data-target="#book_gender_modal"
+                  style="width: 100%" class="btn btn-md btn-dark"><i
+                  class="fas fa-plus-circle"></i> Add book
+               gender</button>
+               <button type="button" data-toggle="modal"
+                  data-target="#book_gender_modal_edit"
+                  style="width: 100%" class="btn btn-md btn-dark mt-2"><i class="fas fa-pencil-alt"></i> Edit book
+               gender</button>
+            </div>
+            <div class="col-md-9">
+               <strong>
+                  <h4 class="mt-2"><strong>Your books</strong></h4>
+               </strong>
+               <hr>
+               <div class="row ml-1">
+                  <select onchange="performFiltering()" class="filter_status"
+                     name="filter_status" id="filter_status">
+                     <option value=""></option>
+                     <option value="COMPLETED">Completed</option>
+                     <option value="READING">Reading</option>
+                     <option value="DROPPED">Dropped</option>
+                     <option value="PLAN_TO_READ">Plan to read</option>
+                     <option value="ALL">All</option>
+                  </select>
+                  <select onchange="performFiltering()" class="filter_gender"
+                     name="filter_gender">
+                     <option></option>
+                     <option value="ALL">All</option>
+                     {% for gender in book_genders %}
+                     <option value="{{gender.id}}">{{gender.name}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <div class="table-wrapper-scroll-y my-custom-scrollbar mt-2">
+                  <table class="table table-bordered table-striped mb-0">
+                     <thead>
+                        <tr>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Title
+                           </th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Author
+                           </th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Gender
+                           </th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Pages</th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Status
+                           </th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Score
+                           </th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Edit</th>
+                           <th style="position: sticky; top: 0;
+                              background-color: rgba(230, 230, 230, 0.99)"
+                              scope="col">Delete
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody id="book-table-body">
+                        {% for book in user_books %}
+                        <tr>
+                           <td>{{book.title}}</td>
+                           <td>{{book.author}}</td>
+                           <td>{{book.gender_name}}</td>
+                           <td>{{book.num_pages}}</td>
+                           <td>{{book.status}}</td>
+                           <td>{{book.score}}</td>
+                           <td class="text-center">
+                              <button
+                                 onclick="updateModal({{book.id}})"
+                                 type="button"
+                                 style="border: none; background-color:
+                                 rgba(0,0,0,0)"
+                                 data-toggle="modal" data-target="#book-modal">
+                              <i class="fas fa-edit text-info"></i>
+                              </button>
+                           </td>
+                           <td class="text-center">
+                              <button
+                                 onclick="deleteBook({{book.id}})"
+                                 type="button"
+                                 style="border: none; background-color:
+                                 rgba(0,0,0,0)">
+                              <i class="fas fa-minus-circle text-danger"
+                                 ></i>
+                              </button>
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+                  {% if user_books|length == 0 %}
+                  <p class="text-center">You don't have any books!</p>
+                  {% endif %}
+                  <p style="display: none" class="text-center"
+                     id="filter-msg">No
+                     results!
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="book-modal" tabindex="-1"
+         aria-labelledby="book-modal" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal-title">Add book</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form id="form-modal">
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_title"
+                                 class="form-label">Title
+                              </label>
+                              <input required type="text"
+                                 class="form-control" id="book_title"
+                                 name="book_title"
+                                 aria-describedby="emailHelp">
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_author"
+                                 class="form-label">Author
+                              </label>
+                              <input required type="text"
+                                 class="form-control" id="book_author"
+                                 name="book_author"
+                                 aria-describedby="emailHelp">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_num_pages"
+                                 class="form-label"># Pages
+                              </label>
+                              <input required type="number" min="1"
+                                 class="form-control"
+                                 id="book_num_pages"
+                                 name="book_num_pages"
+                                 aria-describedby="book_num_pages">
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender"
+                                 class="form-label">Book Gender
+                              </label>
+                              <select id="book_gender"
+                                 name="book_gender">
+                                 <option></option>
+                                 {% for gender in book_genders %}
+                                 <option value="{{gender.id}}">{{gender.name}}</option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_status"
+                                 class="form-label">Status
+                              </label>
+                              <select onchange="changeStatus()" required
+                                 id="book_status"
+                                 name="book_status">
+                                 <option></option>
+                                 <option value="COMPLETED">Completed</option>
+                                 <option value="READING">Reading</option>
+                                 <option value="DROPPED">Dropped</option>
+                                 <option value="PLAN_TO_READ">Plan to read</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_score_select"
+                                 class="form-label ">Score
+                              </label>
+                              <select disabled required class="form-select"
+                                 id="book_score_select"
+                                 name="book_score_select">
+                                 <option value=""></option>
+                                 <option value="1">1</option>
+                                 <option value="2">2</option>
+                                 <option value="3">3</option>
+                                 <option value="4">4</option>
+                                 <option value="5">5</option>
+                                 <option value="6">6</option>
+                                 <option value="7">7</option>
+                                 <option value="8">8</option>
+                                 <option value="9">9</option>
+                                 <option value="10">10</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <button style="float: right" id="modal-btn"
+                        type="submit"
+                        class="btn btn-primary">Add
+                     </button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="book_gender_modal" tabindex="-1"
+         aria-labelledby="book_gender_modal" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="book_gender_modal_title">Add
+                     book gender
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form id="form-modal-book-gender">
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender_name"
+                                 class="form-label">Name
+                              </label>
+                              <input required type="text"
+                                 class="form-control" id="book_gender_name"
+                                 name="book_gender_name"
+                                 aria-describedby="emailHelp">
+                           </div>
+                        </div>
+                     </div>
+                     <button style="float: right" id="modal-add-gender-btn"
+                        type="submit"
+                        class="btn btn-primary">Add
+                     </button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="book_gender_modal_edit" tabindex="-1"
+         aria-labelledby="book_gender_modal_edit" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="book_gender_modal_edit_title">Edit
+                     book gender
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <form id="form-modal-book-gender-edit">
+                     <div class="row">
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender_edit_select"
+                                 class="form-label">Book Gender
+                              </label>
+                              <select required id="book_gender_edit_select"
+                                 name="book_gender">
+                                 <option></option>
+                                 {% for gender in book_genders %}
+                                 <option value="{{gender.id}}">{{gender.name}}</option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="mb-3">
+                              <label for="book_gender_new_name"
+                                 class="form-label">New Name
+                              </label>
+                              <input required type="text"
+                                 class="form-control"
+                                 id="book_gender_new_name"
+                                 name="book_gender_name"
+                                 aria-describedby="book_gender_new_name">
+                           </div>
+                        </div>
+                     </div>
+                     <button style="float: right" id="modal-edit-gender-btn"
+                        type="submit"
+                        class="btn btn-primary">Edit
+                     </button>
+                  </form>
+                  <button onclick="deleteGender()" disabled style="float:
+                     right"
+                     id="modal-delete-gender-btn"
+                     class="btn btn-danger mr-2">Delete
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      <script>
+            var modal_mode = 'create';
+            var update_id_book = '';
+            $(document).ready(function() {
+                $('#form-modal').on('submit', function(e) {
+                    e.preventDefault();
+                    data = {
+                        title: document.getElementById('book_title').value,
+                        author: document.getElementById('book_author').value,
+                        num_pages: document.getElementById('book_num_pages').value,
+                        gender: document.getElementById('book_gender').value,
+                        status: document.getElementById('book_status').value,
+                        score: document.getElementById('book_score_select').value,
                     }
-                },
-            dataType: 'json'
-        });
-    }
-</script>
 
-</body>
+                    if (modal_mode == 'create') {
+                        $.ajax({
+                            type: "POST",
+                            headers: {
+                                'X-CSRFToken': Cookies.get('csrftoken')
+                            },
+                            url: '/api/books/',
+                            data: data,
+                            success: function(response) {
+                                document.location.reload(true);
+                            },
+                            error: function(response) {
+
+                                alert('Error adding book!')
+                            },
+                            dataType: 'json'
+                        });
+                    } else {
+                        $.ajax({
+                            type: "PUT",
+                            headers: {
+                                'X-CSRFToken': Cookies.get('csrftoken')
+                            },
+                            url: '/api/books/' + update_id_book + '/',
+                            data: data,
+                            success: function(response) {
+                                document.location.reload(true);
+                            },
+                            error: function(response) {
+                                alert('Error editing book!')
+                            },
+                            dataType: 'json'
+                        });
+                    }
+                });
+
+                $('#form-modal-book-gender-edit').on('submit', function(e) {
+                    e.preventDefault();
+                    book_gender_id = document.getElementById('book_gender_edit_select').value
+
+                    data = {
+                        id: book_gender_id,
+                        name: document.getElementById('book_gender_new_name').value
+                    }
+
+                    $.ajax({
+                        type: "PUT",
+                        headers: {
+                            'X-CSRFToken': Cookies.get('csrftoken')
+                        },
+                        url: '/api/book-gender/' + book_gender_id + '/',
+                        data: data,
+                        success: function(response) {
+                            document.location.reload(true);
+                        },
+                        error: function(response) {
+                            alert('Error editing book gender!')
+                        },
+                        dataType: 'json'
+                    });
+
+                })
+
+            });
+
+            function resetModal() {
+                modal_mode = "create"
+                document.getElementById('book_title').value = ''
+                document.getElementById('book_author').value = ''
+                document.getElementById('book_num_pages').value = ''
+                $("#book_gender").val('').trigger('change');
+                $("#book_status").val('').trigger('change');
+                $("#book_score_select").val('').trigger('change');
+                $("#book_score_select").disabled = true;
+                document.getElementById('modal-btn').textContent = 'Add'
+                document.getElementById('modal-title').textContent = 'Add book'
+
+            }
+
+            function updateModal(book_id) {
+                update_id_book = book_id;
+                modal_mode = 'edit';
+                $("#book_score_select").disabled = false
+                document.getElementById('modal-title').textContent = 'Edit book'
+                document.getElementById('modal-btn').textContent = 'Edit'
+
+                $.ajax({
+                    type: "GET",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: '/api/books/' + book_id + '/',
+                    success: function(response) {
+                        document.getElementById('book_title').value =
+                            response.title
+                        document.getElementById('book_author').value =
+                            response.author
+                        document.getElementById('book_num_pages').value =
+                            response.num_pages
+
+                        book_gender = response.gender
+                        if (book_gender == null) {
+                            $("#book_gender").val('').trigger('change');
+                        } else {
+                            $("#book_gender").val(response.gender).trigger('change');
+                        }
+
+                        $("#book_status").val(response.status).trigger('change');
+
+                        if (response.status == 'COMPLETED') {
+                            $("#book_score_select").val(response.score).trigger('change');
+                        } else {
+                            $("#book_score_select").val('').trigger('change');
+                            $("#book_score_select").disabled = true;
+                        }
+                    },
+                    error: function(response) {
+                        alert('Error editing book!')
+                    },
+                    dataType: 'json'
+                });
+
+            }
+
+            function deleteBook(book_id) {
+                $.ajax({
+                    type: "DELETE",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: '/api/books/' + book_id + '/',
+                    success: function(response) {
+                        alert('Book deleted!')
+                        document.location.reload(true);
+                    },
+                    error: function(response) {
+                        alert('Error deleting book!')
+                    },
+                    dataType: 'json'
+                });
+            }
+
+            function deleteGender() {
+                var book_gender_id = ''
+                book_gender_id =
+                    document.getElementById('book_gender_edit_select').value
+                $.ajax({
+                    type: "DELETE",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: '/api/book-gender/' + book_gender_id + '/',
+                    success: function(response) {
+                        alert('Book gender deleted!')
+                        document.location.reload(true);
+                    },
+                    error: function(response) {
+                        alert('Error deleting book gender!')
+                    },
+                    dataType: 'json'
+                });
+            }
+
+            function performLogout() {
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: '/api/user/logout/',
+                    success: function(response) {
+                        window.location.href = "/home";
+                    },
+                    error: function(response) {
+                        if (response.status != 200) {
+                            alert('Error during logout!')
+                        } else {
+                            window.location.href = "/";
+                        }
+                    },
+                    dataType: 'json'
+                });
+            }
+
+            function changeStatus() {
+                var status = document.getElementById('book_status').value
+                if (status == 'COMPLETED') {
+                    document.getElementById('book_score_select').disabled = false
+                } else {
+                    document.getElementById('book_score_select').disabled = true
+                    $("#book_score_select").val('').trigger('change')
+                }
+            }
+
+            $(document).ready(function() {
+                $('#form-modal-book-gender').on('submit', function(e) {
+
+                    e.preventDefault();
+                    data = {
+                        name: document.getElementById('book_gender_name').value,
+                    }
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            'X-CSRFToken': Cookies.get('csrftoken')
+                        },
+                        url: '/api/book-gender/',
+                        data: data,
+                        success: function(response) {
+                            document.location.reload(true);
+                        },
+                        error: function(response) {
+
+                            alert('Error adding book gender!')
+                        },
+                        dataType: 'json'
+                    });
+                });
+            });
+
+            function performFiltering() {
+                var status_filter =
+                    document.getElementsByClassName('filter_status')[0].value
+                var gender_filter =
+                    document.getElementsByClassName('filter_gender')[0].value
+
+                var URL = '/api/books?'
+                if (status_filter != '') {
+                    URL += 'status=' + status_filter
+                }
+                if (gender_filter != '') {
+                    if (status_filter != '') {
+                        URL += '&gender=' + gender_filter
+                    } else {
+                        URL += 'gender=' + gender_filter
+                    }
+                }
+                var book_genders = []
+                $.ajax({
+                    type: "GET",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: '/api/book-gender/',
+                    success: function(response) {
+                        book_genders = response
+                    },
+                    error: function(response) {
+                        alert('Error filtering books!')
+                    },
+                    dataType: 'json'
+                });
+
+                $.ajax({
+                    type: "GET",
+                    headers: {
+                        'X-CSRFToken': Cookies.get('csrftoken')
+                    },
+                    url: URL,
+                    success: function(response) {
+
+                        response.forEach((book) => {
+                            book.status = book.status.replaceAll('_', ' ')
+                            book.status = book.status.charAt(0) + book.status.slice(1).toLowerCase();
+                            book.gender_name = '---'
+                            if (book.score == null) {
+                                book.score = '---'
+                            }
+                            book_genders.forEach((book_gender) => {
+                                if (book.gender == book_gender.id) {
+                                    book.gender_name = book_gender.name
+                                }
+                            })
+                        })
+
+                        table_body = document.getElementById('book-table-body')
+                        table_body.innerHTML = ''
+                        if (response.length > 0) {
+                            var new_table_body = ''
+                            response.forEach((book) => {
+                                var table_row = '<tr>'
+                                table_row = table_row + '<td>' + book.title + '</td>'
+                                table_row = table_row + '<td>' + book.author + '</td>'
+                                table_row = table_row + '<td>' + book.gender_name + '</td>'
+                                table_row = table_row + '<td>' + book.num_pages + '</td>'
+                                table_row = table_row + '<td>' + book.status + '</td>'
+                                table_row = table_row + '<td>' + book.score + '</td>'
+                                table_row =
+                                    table_row + '<td class="text-center"><button onClick="updateModal(' + book.id + ')" type="button" style="border: none; background-color:rgba(0, 0, 0, 0)" data-toggle="modal" data-target="#book-modal"><i class="fas fa-edit text-info"></i></button></td>'
+                                table_row =
+                                    table_row + '<td class="text-center"><button onClick="deleteBook(' + book.id + ')" style="border: none; background-color:rgba(0, 0, 0, 0)"><i class="fas fa-minus-circle text-danger"></i></button></td>'
+
+                                table_row = table_row + '</tr>'
+                                new_table_body += table_row
+                            })
+                            table_body.innerHTML = new_table_body
+                            document.getElementById('filter-msg').style.display =
+                                'none'
+                        } else {
+                            document.getElementById('filter-msg').style.display =
+                                'block'
+                        }
+                    },
+                    error: function(response) {
+                        alert('Error filtering books!')
+                    },
+                    dataType: 'json'
+                });
+            }
+
+            $(document).ready(function() {
+                $('.filter_status').select2({
+                    width: '200px',
+                    placeholder: "Filter by status",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+                });
+
+                $('#book_gender').select2({
+                    width: '200px',
+                    placeholder: "Select a gender",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+                });
+
+                $('#book_status').select2({
+                    width: '200px',
+                    placeholder: "Select a status",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+                });
+
+                $('#book_score_select').select2({
+                    width: '200px',
+                    placeholder: "Select a score",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+                });
+
+                $('#book_gender_edit_select').select2({
+                    width: '200px',
+                    placeholder: "Select a gender",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+
+                });
+
+                $('#book_gender_edit_select').on('change', () => {
+                    document.getElementById('modal-delete-gender-btn').disabled = false
+                })
+
+                $('.filter_gender').select2({
+                    width: '200px',
+                    placeholder: "Filter by book gender",
+                    minimumResultsForSearch: -1,
+                    initSelection: function(element, callback) {}
+                });
+            });
+      </script>
+   </body>
 </html>
