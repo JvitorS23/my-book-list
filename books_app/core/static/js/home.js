@@ -272,6 +272,7 @@ function performFiltering() {
         },
         url: URL,
         success: function(response) {
+            document.getElementById('msg-no-books').style.display = 'none'
 
             response.forEach((book) => {
                 book.status = book.status.replaceAll('_', ' ')
