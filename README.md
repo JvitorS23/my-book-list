@@ -49,7 +49,21 @@ https://mybooklist-django.herokuapp.com/swagger
 
 ## Detalhes da solução proposta
 
-Features:
+### Descrição geral
+O projeto Django criado possui 3 apps, eles são:
+
+* User: Responsável pela criação e autenticação de usuários (SessionAuthentication) 
+   * Rota de login: ```/api/user/login```
+   * Rota de registro de um novo usuário: ```/api/user/register```
+   * Rota de logout: ```/api/user/logout```
+   * Rota pro usuário visualizar e editar o próprio perfil: ```/api/user/me``` (não foi criada tela de perfil, apenas a rota)
+* Books: Responsável pelo CRUD de livros e de categorias (book-gender)
+   * CRUD livros ```/api/books```
+   * CRUD categorias (book-gender) ```/api/book-gender```
+* Core: Responsável por cuidar das requisições das páginas (Login, registro, landing page e home page), nesse app estão os templates, migrations e models da aplicação.
+
+
+### Features:
 * Login e registro de usuários
 * Autenticação para acessar as API's - Autenticação por sessão do próprio Django (SessionAuthentication)
 * CRUD de livros e categorias (book-gender) 
