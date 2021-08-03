@@ -76,7 +76,7 @@ O projeto Django criado possui 3 apps, eles são:
 O deploy da aplicação foi feito usando o Heroku. Para tal, o pacote para python django-heroku foi usado, esse pacote facilita o processo de deploy de uma aplicação Django para o heroku, com poucas modificações no código e adição de dois arquivos (Procfile e runtime.txt) o deploy da aplicação pode ser feito.  
 Demo da aplicação rodando no [Heroku](https://www.heroku.com/):
 
-https://django-vehicle-manager.herokuapp.com/
+https://mybooklist-django.herokuapp.com/
 
 
 
